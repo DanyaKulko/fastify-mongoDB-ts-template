@@ -1,13 +1,14 @@
 import UserRepository from '@userModule/user.repository';
 import { LoginUserBody, SignupUserBody } from '@authModule/auth.types';
 import bcrypt from 'bcrypt';
+import { PasswordIncorrectError, UserExistsError, UserNotFoundError } from '@errors/AuthErrors';
 
 class AuthService {
     async registerUser({ email, username, password }: SignupUserBody) {
         const userExists = await UserRepository.checkUserExistsByEmailOrUsername(email, username);
 
         if (userExists) {
-            throw new Error('User with that email or username already exists');
+            throw new UserExistsError();
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -18,13 +19,13 @@ class AuthService {
     async loginUser({ email, password }: LoginUserBody) {
         const user = await UserRepository.findUserByEmail(email);
         if (!user) {
-            throw new Error('User not found');
+            throw new UserNotFoundError();
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
         if (!isPasswordCorrect) {
-            throw new Error('Password is incorrect');
+            throw new PasswordIncorrectError();
         }
 
         return user;

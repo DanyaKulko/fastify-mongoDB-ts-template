@@ -4,6 +4,7 @@ import config from '@config';
 import User from '@userModule/user.model';
 import { AuthorizedFastifyRequest } from '@projectTypes/requests';
 import { UserRole } from '@projectTypes/models';
+import { UnauthorizedError, ForbiddenError } from '@errors/AuthErrors';
 
 const authPlugin = async (fastify: FastifyInstance) => {
     fastify.register(import('@fastify/jwt'), {
@@ -18,14 +19,14 @@ const authPlugin = async (fastify: FastifyInstance) => {
         const user = await User.findById(decoded.id).lean();
         if (!user) {
             reply.code(401).send({ message: 'Unauthorized' });
-            throw new Error('Unauthorized');
+            throw new UnauthorizedError();
         }
         request.user = user;
     });
 
     fastify.decorate('checkRoles', (roles: UserRole[]) => async (request: AuthorizedFastifyRequest) => {
         if (!roles.includes(request.user.role)) {
-            throw new Error('Forbidden');
+            throw new ForbiddenError();
         }
     });
 };

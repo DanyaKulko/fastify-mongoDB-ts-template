@@ -10,7 +10,8 @@
         "@projectTypes/*": ["./src/types/*"],
         "@authModule/*": ["./src/modules/auth/*"],
         "@userModule/*": ["./src/modules/user/*"],
-        "@config": ["./src/config/index.ts"]
+        "@config": ["./src/config/index.ts"],
+        "@errors/*": ["./src/errors/*"],
     },
     "baseUrl": ".",
     "strict": true,

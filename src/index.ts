@@ -8,6 +8,7 @@ import mongooseConnector from './plugins/mongooseConnector.plugin';
 import auth from './plugins/auth.plugin';
 import authRoutes from '@authModule/auth.route';
 import userRoutes from '@userModule/user.route';
+import { BaseError } from '@errors/BaseError';
 
 const server = fastify({ logger: false });
 
@@ -41,9 +42,15 @@ async function main() {
 
         server.setErrorHandler(async (err: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
             request.logger.error({ err: err.message });
+
+            if (err instanceof BaseError) {
+                return reply.code(err.statusCode).send({ message: err.message });
+            }
+
             if (err.validation) {
                 return reply.code(403).send({ message: err.message });
             }
+
             reply.code(err.statusCode || 500).send({ message: err.message });
         });
 
