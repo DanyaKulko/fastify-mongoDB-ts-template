@@ -1,20 +1,26 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
 dotenv.config({
-    path: path.join(__dirname, '..', '..', `.env.${process.env.NODE_ENV || 'development'}`),
+    path: path.join(__dirname, '..', '..', `.env.${NODE_ENV}`),
 });
 
 interface Config {
     PORT: number;
     JWT_SECRET: string;
     MONGODB_URI: string;
+    NODE_ENV: string;
+    origin: string;
 }
 
 const config: Config = {
     PORT: +(process.env.PORT || '3000'),
     JWT_SECRET: process.env.JWT_SECRET || 'secret',
     MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017/fastify_template',
+    NODE_ENV,
+    origin: process.env.ALLOWED_ORIGIN || '*',
 };
 
 export default config;
