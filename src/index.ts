@@ -1,4 +1,6 @@
 import fastify, { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
+import cors from '@fastify/cors';
+import helmet from '@fastify/helmet';
 import config from '@config';
 import logger from './utils/logger';
 import swaggerPlugin from './plugins/swagger.plugin';
@@ -10,24 +12,27 @@ import userRoutes from '@userModule/user.route';
 const server = fastify({ logger: false });
 
 server.addHook('onRequest', async (request) => {
-    request.startTime = process.hrtime.bigint();
-    request.logger = server.logger;
+    request.logger = logger;
 });
 
-server.addHook('onResponse', async (request) => {
-    const responseTime = Number(process.hrtime.bigint() - request.startTime) / 1e6;
+server.addHook('onResponse', async (request, reply) => {
     server.logger.info(
-        `Request: ${request.method} ${request.url} from ${request.ip} - Response time: ${responseTime.toFixed(2)} ms`,
+        `Request: ${request.method} ${request.url} from ${request.ip} - Response time: ${reply.elapsedTime.toFixed(2)} ms`,
     );
 });
 
 async function main() {
     try {
         server.decorate('logger', logger);
+        server.register(cors, {
+            origin: config.origin,
+        });
+        server.register(helmet);
+
         server.register(mongooseConnector);
         server.register(auth);
 
-        if (process.env.NODE_ENV !== 'production') {
+        if (config.NODE_ENV !== 'production') {
             server.register(swaggerPlugin);
         }
 
@@ -49,7 +54,7 @@ async function main() {
         await server.listen({ port: config.PORT });
         server.logger.info(`Server listening at http://localhost:${config.PORT}`);
 
-        if (process.env.NODE_ENV !== 'production') {
+        if (config.NODE_ENV !== 'production') {
             server.logger.info(`Swagger UI available at http://localhost:${config.PORT}/docs`);
         }
     } catch (error) {

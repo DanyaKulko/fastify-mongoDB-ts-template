@@ -12,7 +12,6 @@ declare module 'fastify' {
 
     export interface FastifyRequest {
         logger: Logger;
-        startTime: bigint;
     }
 }
 
