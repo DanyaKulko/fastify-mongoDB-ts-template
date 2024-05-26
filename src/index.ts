@@ -1,14 +1,18 @@
-import fastify, { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
+import fastify from 'fastify';
+
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
+
 import config from '@config';
 import logger from './utils/logger';
+
 import swaggerPlugin from './plugins/swagger.plugin';
-import mongooseConnector from './plugins/mongooseConnector.plugin';
-import auth from './plugins/auth.plugin';
+import errorHandlerPlugin from './plugins/errorHandler.plugin';
+import mongooseConnectorPlugin from './plugins/mongooseConnector.plugin';
+import authPlugin from './plugins/auth.plugin';
+
 import authRoutes from '@authModule/auth.route';
 import userRoutes from '@userModule/user.route';
-import { BaseError } from '@errors/BaseError';
 
 const server = fastify({ logger: false });
 
@@ -25,13 +29,15 @@ server.addHook('onResponse', async (request, reply) => {
 async function main() {
     try {
         server.decorate('logger', logger);
+
         server.register(cors, {
             origin: config.origin,
         });
         server.register(helmet);
 
-        server.register(mongooseConnector);
-        server.register(auth);
+        server.register(mongooseConnectorPlugin);
+        server.register(authPlugin);
+        server.register(errorHandlerPlugin);
 
         if (config.NODE_ENV !== 'production') {
             server.register(swaggerPlugin);
@@ -39,24 +45,6 @@ async function main() {
 
         server.register(userRoutes, { prefix: 'api/users' });
         server.register(authRoutes, { prefix: 'api/auth' });
-
-        server.setErrorHandler(async (err: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
-            request.logger.error({ err: err.message });
-
-            if (err instanceof BaseError) {
-                return reply.code(err.statusCode).send({ message: err.message });
-            }
-
-            if (err.validation) {
-                return reply.code(403).send({ message: err.message });
-            }
-
-            reply.code(err.statusCode || 500).send({ message: err.message });
-        });
-
-        server.setNotFoundHandler((_request: FastifyRequest, reply: FastifyReply) => {
-            reply.code(404).send({ message: 'Route not found' });
-        });
 
         await server.listen({ port: config.PORT });
         server.logger.info(`Server listening at http://localhost:${config.PORT}`);
