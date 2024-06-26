@@ -21,7 +21,6 @@ This template is open for contributions and suggestions. Feel free to open an is
 - [ ] Add tests
 - [ ] Add docker and docker-compose configuration
 - [ ] Add GitHub actions
-- [ ] Add husky for pre-commit hooks
 
 ## Getting Started
 
@@ -45,8 +44,7 @@ This template is open for contributions and suggestions. Feel free to open an is
 ```text
 src
 ├── config
-│   ├── index.ts
-│   └── logger.ts
+│   └── index.ts
 ├── errors
 │   ├── AuthError.ts
 │   └── BaseError.ts
@@ -71,9 +69,10 @@ src
 │   ├── models.ts
 │   └── request.ts
 ├── plugins
-│   └── auth.plugin.ts
-│   └── errorHandler.plugin.ts
-│   └── prismaConnector.plugin.ts
+│   ├── auth.plugin.ts
+│   ├── errorHandler.plugin.ts
+│   ├── mongooseConnector.plugin.ts
+│   ├── logger.plugin.ts
 │   └── swagger.plugin.ts
 ├── utils
 │   └── logger.ts
