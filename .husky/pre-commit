@@ -7,7 +7,7 @@ NO_COLOR='\033[0m'
 
 echo -e "${GREEN}Running ESLint...${NO_COLOR}"
 
-if npm run lint; then
+if npm run lint-staged; then
   echo -e "${GREEN}ESLint passed${NO_COLOR}"
   exit 0
 else

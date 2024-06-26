@@ -17,6 +17,7 @@
     "build": "tsc && tsc-alias",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "lint": "eslint . --ext .ts",
+    "lint-staged": "lint-staged",
     "lint:fix": "eslint . --ext .ts --fix",
     "prepare": "husky install"
   },
