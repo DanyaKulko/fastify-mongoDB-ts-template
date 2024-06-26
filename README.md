@@ -73,7 +73,7 @@ src
 ├── plugins
 │   └── auth.plugin.ts
 │   └── errorHandler.plugin.ts
-│   └── mongooseConnector.plugin.ts
+│   └── prismaConnector.plugin.ts
 │   └── swagger.plugin.ts
 ├── utils
 │   └── logger.ts

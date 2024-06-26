@@ -7,7 +7,6 @@ export async function registerUserHandler(request: FastifyRequest<SignupUserRequ
     const { username, email, password } = request.body;
 
     const user = await AuthService.registerUser({ email, username, password });
-    request.logger.info(`User ${user.username} registered successfully`);
     const token = request.server.jwt.sign({ id: user._id });
 
     reply.send({ token });
