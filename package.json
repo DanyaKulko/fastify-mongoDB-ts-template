@@ -19,7 +19,7 @@
     "lint": "eslint . --ext .ts",
     "lint-staged": "lint-staged",
     "lint:fix": "eslint . --ext .ts --fix",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{ts,js}": [

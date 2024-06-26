@@ -5,12 +5,12 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NO_COLOR='\033[0m'
 
-echo -e "${GREEN}Running ESLint...${NO_COLOR}"
+echo -e "${GREEN}Running lint-staged...${NO_COLOR}"
 
 if npm run lint-staged; then
-  echo -e "${GREEN}ESLint passed${NO_COLOR}"
+  echo -e "\n${GREEN}✔ Lint checks passed, commit created${NO_COLOR}"
   exit 0
 else
-  echo -e "${RED}ESLint error${NO_COLOR}"
+  echo -e "\n${RED}✖ Lint checks failed, commit wasn't created${NO_COLOR}"
   exit 1
 fi
