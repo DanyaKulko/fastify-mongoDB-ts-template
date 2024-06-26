@@ -22,4 +22,7 @@ const errorHandlerPlugin: FastifyPluginAsync = async (fastify) => {
     });
 };
 
-export default fp(errorHandlerPlugin);
+export default fp(errorHandlerPlugin, {
+    name: 'errorHandler',
+    dependencies: ['logger'],
+});

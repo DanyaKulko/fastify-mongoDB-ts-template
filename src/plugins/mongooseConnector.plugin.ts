@@ -29,4 +29,9 @@ const mongooseConnectorPlugin = async (fastify: FastifyInstance) => {
     });
 };
 
-export default fp(mongooseConnectorPlugin);
+export default fp(mongooseConnectorPlugin, {
+    name: 'mongooseConnector',
+    decorators: {
+        fastify: ['logger'],
+    },
+});

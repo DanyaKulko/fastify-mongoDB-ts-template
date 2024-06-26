@@ -31,4 +31,7 @@ const authPlugin = async (fastify: FastifyInstance) => {
     });
 };
 
-export default fp(authPlugin);
+export default fp(authPlugin, {
+    name: 'auth',
+    dependencies: ['logger'],
+});

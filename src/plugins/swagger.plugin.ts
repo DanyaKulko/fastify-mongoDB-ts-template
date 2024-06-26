@@ -28,4 +28,6 @@ const swaggerPlugin = async (fastify: FastifyInstance) => {
     fastify.register(import('@fastify/swagger-ui'), { routePrefix: '/docs' });
 };
 
-export default fp(swaggerPlugin);
+export default fp(swaggerPlugin, {
+    name: 'swagger',
+});
