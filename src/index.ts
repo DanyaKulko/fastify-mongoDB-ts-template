@@ -20,14 +20,6 @@ async function buildServer(): Promise<FastifyInstance> {
     await registerPlugins(server);
     await registerRoutes(server);
 
-    if (config.NODE_ENV !== 'test') {
-        await server.listen({ port: config.PORT });
-        server.logger.info(`Server listening at http://localhost:${config.PORT}`);
-        if (config.NODE_ENV !== 'production') {
-            server.logger.info(`Swagger UI available at http://localhost:${config.PORT}/docs`);
-        }
-    }
-
     ['SIGINT', 'SIGTERM'].forEach((signal) => {
         process.on(signal, async () => {
             server.logger.error(`Received ${signal}, closing server.`);
@@ -69,6 +61,18 @@ async function registerRoutes(server: FastifyInstance): Promise<void> {
     }
 }
 
-buildServer();
+buildServer().then(async (server) => {
+    try {
+        await server.listen({ port: config.PORT });
+        server.logger.info(`Server listening at http://localhost:${config.PORT}`);
+
+        if (config.NODE_ENV !== 'production') {
+            server.logger.info(`Swagger UI available at http://localhost:${config.PORT}/docs`);
+        }
+    } catch (error) {
+        server.logger.error('Error starting server', error);
+        process.exit(1);
+    }
+});
 
 export default buildServer;
