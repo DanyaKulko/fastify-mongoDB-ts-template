@@ -20,11 +20,12 @@ async function buildServer(): Promise<FastifyInstance> {
     await registerPlugins(server);
     await registerRoutes(server);
 
-    await server.listen({ port: config.PORT });
-    server.logger.info(`Server listening at http://localhost:${config.PORT}`);
-
-    if (config.NODE_ENV !== 'production') {
-        server.logger.info(`Swagger UI available at http://localhost:${config.PORT}/docs`);
+    if (config.NODE_ENV !== 'test') {
+        await server.listen({ port: config.PORT });
+        server.logger.info(`Server listening at http://localhost:${config.PORT}`);
+        if (config.NODE_ENV !== 'production') {
+            server.logger.info(`Swagger UI available at http://localhost:${config.PORT}/docs`);
+        }
     }
 
     ['SIGINT', 'SIGTERM'].forEach((signal) => {
@@ -43,7 +44,9 @@ async function registerPlugins(server: FastifyInstance): Promise<void> {
         await server.register(cors, { origin: config.origin });
         await server.register(helmet);
         await server.register(loggerPlugin);
-        await server.register(mongooseConnectorPlugin);
+        if (config.NODE_ENV !== 'test') {
+            await server.register(mongooseConnectorPlugin);
+        }
         await server.register(authPlugin);
         await server.register(errorHandlerPlugin);
 

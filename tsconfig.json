@@ -5,8 +5,9 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node","./src/types/fastify/index.d.ts"],
+    "types": ["node","./src/types/fastify/index.d.ts", "jest"],
     "paths": {
+        "@src/*": ["./src/*"],
         "@projectTypes/*": ["./src/types/*"],
         "@authModule/*": ["./src/modules/auth/*"],
         "@userModule/*": ["./src/modules/user/*"],
@@ -19,6 +20,6 @@
     "rootDir": "./src",
     "outDir": "./dist",
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
