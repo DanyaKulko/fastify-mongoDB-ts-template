@@ -1,37 +1,37 @@
-import { FastifyInstance } from 'fastify';
-import mongoose from 'mongoose';
-import config from '@config';
-import fp from 'fastify-plugin';
+import type { FastifyInstance } from "fastify";
+import mongoose from "mongoose";
+import config from "@config";
+import fp from "fastify-plugin";
 
 const mongooseConnectorPlugin = async (fastify: FastifyInstance) => {
-    const connect = async () => {
-        try {
-            const db = await mongoose.connect(config.MONGODB_URI);
-            fastify.logger.info('MongoDB connected');
+	const connect = async () => {
+		try {
+			const db = await mongoose.connect(config.MONGODB_URI);
+			fastify.logger.info("MongoDB connected");
 
-            db.connection.on('error', (error) => {
-                fastify.logger.error('MongoDB connection error. Reconnect in 5 seconds. Error: ', error);
-                setTimeout(connect, 5000);
-            });
-        } catch (error) {
-            fastify.logger.error('MongoDB connection error. Reconnect in 5 seconds. Error: ', error);
-            setTimeout(connect, 5000);
-        }
-    };
+			db.connection.on("error", (error) => {
+				fastify.logger.error("MongoDB connection error. Reconnect in 5 seconds. Error: ", error);
+				setTimeout(connect, 5000);
+			});
+		} catch (error) {
+			fastify.logger.error("MongoDB connection error. Reconnect in 5 seconds. Error: ", error);
+			setTimeout(connect, 5000);
+		}
+	};
 
-    connect();
+	connect();
 
-    fastify.addHook('onClose', async () => {
-        fastify.logger.info('Disconnecting Mongoose');
-        await mongoose.disconnect().catch((error) => {
-            fastify.logger.error('Error disconnecting Mongoose: ', error);
-        });
-    });
+	fastify.addHook("onClose", async () => {
+		fastify.logger.info("Disconnecting Mongoose");
+		await mongoose.disconnect().catch((error) => {
+			fastify.logger.error("Error disconnecting Mongoose: ", error);
+		});
+	});
 };
 
 export default fp(mongooseConnectorPlugin, {
-    name: 'mongooseConnector',
-    decorators: {
-        fastify: ['logger'],
-    },
+	name: "mongooseConnector",
+	decorators: {
+		fastify: ["logger"],
+	},
 });

@@ -1,6 +1,6 @@
-import { FastifyRequest } from 'fastify';
-import { IUser } from './models';
+import type { FastifyRequest } from "fastify";
+import type { IUser } from "./models";
 
 export interface AuthorizedFastifyRequest extends FastifyRequest {
-    user: IUser;
+	user: IUser;
 }
