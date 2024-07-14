@@ -7,7 +7,7 @@ NO_COLOR='\033[0m'
 
 echo -e "${GREEN}Running lint-staged...${NO_COLOR}"
 
-if npm run lint-staged; then
+if npx lint-staged; then
   echo -e "\n${GREEN}✔ Lint checks passed, commit created${NO_COLOR}"
   exit 0
 else

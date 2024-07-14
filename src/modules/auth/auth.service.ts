@@ -1,11 +1,19 @@
 import UserRepository from "@userModule/user.repository";
 import type { LoginUserBody, SignupUserBody } from "@authModule/auth.types";
 import bcrypt from "bcrypt";
-import { PasswordIncorrectError, UserExistsError, UserNotFoundError } from "@errors/AuthErrors";
+import {
+	PasswordIncorrectError,
+	UserExistsError,
+	UserNotFoundError,
+} from "@errors/AuthErrors";
 
 class AuthService {
 	async registerUser({ email, username, password }: SignupUserBody) {
-		const userExists = await UserRepository.checkUserExistsByEmailOrUsername(email, username);
+		const userExists =
+			await UserRepository.checkUserExistsByEmailOrUsername(
+				email,
+				username,
+			);
 
 		if (userExists) {
 			throw new UserExistsError();

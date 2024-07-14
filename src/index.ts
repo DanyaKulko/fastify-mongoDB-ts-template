@@ -64,10 +64,14 @@ async function registerRoutes(server: FastifyInstance): Promise<void> {
 buildServer().then(async (server) => {
 	try {
 		await server.listen({ port: config.PORT });
-		server.logger.info(`Server listening at http://localhost:${config.PORT}`);
+		server.logger.info(
+			`Server listening at http://localhost:${config.PORT}`,
+		);
 
 		if (config.NODE_ENV !== "production") {
-			server.logger.info(`Swagger UI available at http://localhost:${config.PORT}/docs`);
+			server.logger.info(
+				`Swagger UI available at http://localhost:${config.PORT}/docs`,
+			);
 		}
 	} catch (error) {
 		server.logger.error("Error starting server", error);

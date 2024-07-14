@@ -14,21 +14,27 @@ const authPlugin = async (fastify: FastifyInstance) => {
 		},
 	});
 
-	fastify.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
-		const decoded: { id: string } = await request.jwtVerify();
-		const user = await User.findById(decoded.id).lean();
-		if (!user) {
-			reply.code(401).send({ message: "Unauthorized" });
-			throw new UnauthorizedError();
-		}
-		request.user = user;
-	});
+	fastify.decorate(
+		"authenticate",
+		async (request: FastifyRequest, reply: FastifyReply) => {
+			const decoded: { id: string } = await request.jwtVerify();
+			const user = await User.findById(decoded.id).lean();
+			if (!user) {
+				reply.code(401).send({ message: "Unauthorized" });
+				throw new UnauthorizedError();
+			}
+			request.user = user;
+		},
+	);
 
-	fastify.decorate("checkRoles", (roles: UserRole[]) => async (request: AuthorizedFastifyRequest) => {
-		if (!roles.includes(request.user.role)) {
-			throw new ForbiddenError();
-		}
-	});
+	fastify.decorate(
+		"checkRoles",
+		(roles: UserRole[]) => async (request: AuthorizedFastifyRequest) => {
+			if (!roles.includes(request.user.role)) {
+				throw new ForbiddenError();
+			}
+		},
+	);
 };
 
 export default fp(authPlugin, {

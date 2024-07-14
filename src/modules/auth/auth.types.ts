@@ -1,18 +1,18 @@
 export interface SignupUserBody {
-    email: string;
-    username: string;
-    password: string;
+	email: string;
+	username: string;
+	password: string;
 }
 
 export interface LoginUserBody {
-    email: string;
-    password: string;
+	email: string;
+	password: string;
 }
 
 export interface SignupUserRequest {
-    Body: SignupUserBody;
+	Body: SignupUserBody;
 }
 
 export interface LoginUserRequest {
-    Body: LoginUserBody;
+	Body: LoginUserBody;
 }

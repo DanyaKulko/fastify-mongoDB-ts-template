@@ -2,7 +2,11 @@ import User from "./user.model";
 import type { IUser } from "@projectTypes/models";
 
 class UserRepository {
-	async createUser(username: string, email: string, password: string): Promise<IUser> {
+	async createUser(
+		username: string,
+		email: string,
+		password: string,
+	): Promise<IUser> {
 		return await User.create({ username, email, password });
 	}
 

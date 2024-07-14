@@ -11,14 +11,15 @@
 		"dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register src/index.ts",
 		"build": "tsc && tsc-alias",
 		"start": "cross-env NODE_ENV=production node dist/index.js",
-		"lint": "eslint . --ext .ts",
-		"lint-staged": "lint-staged",
-		"lint:fix": "eslint . --ext .ts --fix",
+		"lint": "biome check --no-errors-on-unmatched",
+		"lint:fix": "biome check --write --no-errors-on-unmatched",
 		"test": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit",
 		"prepare": "husky"
 	},
 	"lint-staged": {
-		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json}": ["biome check --write --no-errors-on-unmatched"]
+		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json}": [
+			"biome check --write --no-errors-on-unmatched"
+		]
 	},
 	"dependencies": {
 		"@fastify/cors": "^9.0.1",

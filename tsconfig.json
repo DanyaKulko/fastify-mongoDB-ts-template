@@ -1,25 +1,25 @@
 {
-  "compilerOptions": {
-    "moduleResolution": "node",
-    "target": "es2022",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "types": ["node","./src/types/fastify/index.d.ts", "jest"],
-    "paths": {
-        "@src/*": ["./src/*"],
-        "@projectTypes/*": ["./src/types/*"],
-        "@authModule/*": ["./src/modules/auth/*"],
-        "@userModule/*": ["./src/modules/user/*"],
-        "@config": ["./src/config/index.ts"],
-        "@errors/*": ["./src/errors/*"],
-    },
-    "baseUrl": ".",
-    "strict": true,
-    "skipLibCheck": true,
-    "rootDir": "./src",
-    "outDir": "./dist",
-  },
-  "include": ["src/**/*.ts", "tests/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+	"compilerOptions": {
+		"moduleResolution": "node",
+		"target": "es2022",
+		"module": "commonjs",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"types": ["node", "./src/types/fastify/index.d.ts", "jest"],
+		"paths": {
+			"@src/*": ["./src/*"],
+			"@projectTypes/*": ["./src/types/*"],
+			"@authModule/*": ["./src/modules/auth/*"],
+			"@userModule/*": ["./src/modules/user/*"],
+			"@config": ["./src/config/index.ts"],
+			"@errors/*": ["./src/errors/*"]
+		},
+		"baseUrl": ".",
+		"strict": true,
+		"skipLibCheck": true,
+		"rootDir": "./src",
+		"outDir": "./dist"
+	},
+	"include": ["src/**/*.ts", "tests/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
 }

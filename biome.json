@@ -1,7 +1,13 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
 	"files": {
-		"ignore": ["dist/**", "node_modules/**", ".idea/**", ".vscode/**", ".DS_Store"]
+		"ignore": [
+			"dist/**",
+			"node_modules/**",
+			".idea/**",
+			".vscode/**",
+			".DS_Store"
+		]
 	},
 	"organizeImports": {
 		"enabled": false
@@ -15,6 +21,6 @@
 	"formatter": {
 		"enabled": true,
 		"indentWidth": 4,
-		"lineWidth": 120
+		"lineEnding": "crlf"
 	}
 }

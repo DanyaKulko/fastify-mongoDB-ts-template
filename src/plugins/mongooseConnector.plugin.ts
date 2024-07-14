@@ -10,11 +10,17 @@ const mongooseConnectorPlugin = async (fastify: FastifyInstance) => {
 			fastify.logger.info("MongoDB connected");
 
 			db.connection.on("error", (error) => {
-				fastify.logger.error("MongoDB connection error. Reconnect in 5 seconds. Error: ", error);
+				fastify.logger.error(
+					"MongoDB connection error. Reconnect in 5 seconds. Error: ",
+					error,
+				);
 				setTimeout(connect, 5000);
 			});
 		} catch (error) {
-			fastify.logger.error("MongoDB connection error. Reconnect in 5 seconds. Error: ", error);
+			fastify.logger.error(
+				"MongoDB connection error. Reconnect in 5 seconds. Error: ",
+				error,
+			);
 			setTimeout(connect, 5000);
 		}
 	};

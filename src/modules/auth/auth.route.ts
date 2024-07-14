@@ -1,7 +1,15 @@
-import { getUserHandler, loginUserHandler, registerUserHandler } from "./auth.controller";
+import {
+	getUserHandler,
+	loginUserHandler,
+	registerUserHandler,
+} from "./auth.controller";
 import type { FastifyInstance } from "fastify";
 import type { SignupUserRequest, LoginUserRequest } from "./auth.types";
-import { authGetMeSchema, authLoginSchema, authSignupSchema } from "./auth.schema";
+import {
+	authGetMeSchema,
+	authLoginSchema,
+	authSignupSchema,
+} from "./auth.schema";
 
 async function authRoutes(server: FastifyInstance) {
 	server.post<LoginUserRequest>(
