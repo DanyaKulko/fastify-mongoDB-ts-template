@@ -5,7 +5,7 @@
 - Fastify (5.x) 
 - Mongoose
 - Winston + Winston logrotate
-- Eslint + Prettier
+- Biome (instead of Eslint + Prettier)
 - Jest
 - Husky
 - Swagger in development mode
