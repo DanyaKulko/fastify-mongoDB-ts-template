@@ -12,17 +12,14 @@ const authPlugin = async (fastify: FastifyInstance) => {
 		},
 	});
 
-	fastify.decorate(
-		"authenticate",
-		async (request: FastifyRequest, reply: FastifyReply) => {
-			const decoded: { id: string } = await request.jwtVerify();
-			const user = await User.findById(decoded.id).lean();
-			if (!user) {
-				throw new HttpError(401, "Unauthorized");
-			}
-			request.user = user;
-		},
-	);
+	fastify.decorate("authenticate", async (request: FastifyRequest) => {
+		const decoded: { id: string } = await request.jwtVerify();
+		const user = await User.findById(decoded.id).lean();
+		if (!user) {
+			throw new HttpError(401, "Unauthorized");
+		}
+		request.user = user;
+	});
 
 	fastify.decorate(
 		"checkRoles",
