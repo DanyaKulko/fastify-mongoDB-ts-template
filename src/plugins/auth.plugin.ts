@@ -1,10 +1,8 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import fp from "fastify-plugin";
 import config from "@config";
-import User from "@userModule/user.model";
-import type { AuthorizedFastifyRequest } from "@projectTypes/requests";
-import type { UserRole } from "@projectTypes/models";
-import { UnauthorizedError, ForbiddenError } from "@errors/AuthErrors";
+import User, { type UserRole } from "@userModule/user.model";
+import HttpError from "@errors/HttpError";
 
 const authPlugin = async (fastify: FastifyInstance) => {
 	fastify.register(import("@fastify/jwt"), {
@@ -20,8 +18,7 @@ const authPlugin = async (fastify: FastifyInstance) => {
 			const decoded: { id: string } = await request.jwtVerify();
 			const user = await User.findById(decoded.id).lean();
 			if (!user) {
-				reply.code(401).send({ message: "Unauthorized" });
-				throw new UnauthorizedError();
+				throw new HttpError(401, "Unauthorized");
 			}
 			request.user = user;
 		},
@@ -29,9 +26,9 @@ const authPlugin = async (fastify: FastifyInstance) => {
 
 	fastify.decorate(
 		"checkRoles",
-		(roles: UserRole[]) => async (request: AuthorizedFastifyRequest) => {
+		(roles: UserRole[]) => async (request: FastifyRequest) => {
 			if (!roles.includes(request.user.role)) {
-				throw new ForbiddenError();
+				throw new HttpError(403, "Forbidden");
 			}
 		},
 	);

@@ -42,7 +42,7 @@ async function registerPlugins(server: FastifyInstance): Promise<void> {
 		await server.register(authPlugin);
 		await server.register(errorHandlerPlugin);
 
-		if (config.NODE_ENV !== "production") {
+		if (!config.PROD) {
 			await server.register(swaggerPlugin);
 		}
 	} catch (error) {
@@ -63,12 +63,14 @@ async function registerRoutes(server: FastifyInstance): Promise<void> {
 
 buildServer().then(async (server) => {
 	try {
+		await server.ready();
+
 		await server.listen({ port: config.PORT });
 		server.logger.info(
 			`Server listening at http://localhost:${config.PORT}`,
 		);
 
-		if (config.NODE_ENV !== "production") {
+		if (!config.PROD) {
 			server.logger.info(
 				`Swagger UI available at http://localhost:${config.PORT}/docs`,
 			);

@@ -1,39 +1,33 @@
-import UserRepository from "@userModule/user.repository";
 import type { LoginUserBody, SignupUserBody } from "@authModule/auth.types";
 import bcrypt from "bcrypt";
-import {
-	PasswordIncorrectError,
-	UserExistsError,
-	UserNotFoundError,
-} from "@errors/AuthErrors";
+import HttpError from "@errors/HttpError";
+import User from "@userModule/user.model";
 
 class AuthService {
 	async registerUser({ email, username, password }: SignupUserBody) {
-		const userExists =
-			await UserRepository.checkUserExistsByEmailOrUsername(
-				email,
-				username,
-			);
+		const userExists = await User.exists({
+			$or: [{ email }, { username }],
+		});
 
 		if (userExists) {
-			throw new UserExistsError();
+			throw new HttpError(404, "User not found");
 		}
 
 		const hashedPassword = await bcrypt.hash(password, 10);
 
-		return await UserRepository.createUser(username, email, hashedPassword);
+		return await User.create({ username, email, password: hashedPassword });
 	}
 
 	async loginUser({ email, password }: LoginUserBody) {
-		const user = await UserRepository.findUserByEmail(email);
+		const user = await User.findOne({ email }).lean();
 		if (!user) {
-			throw new UserNotFoundError();
+			throw new HttpError(404, "User not found");
 		}
 
 		const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
 		if (!isPasswordCorrect) {
-			throw new PasswordIncorrectError();
+			throw new HttpError(400, "Password incorrect");
 		}
 
 		return user;

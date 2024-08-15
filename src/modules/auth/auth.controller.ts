@@ -1,6 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { LoginUserRequest, SignupUserRequest } from "../auth/auth.types";
-import type { AuthorizedFastifyRequest } from "@projectTypes/requests";
 import AuthService from "@authModule/auth.service";
 
 export async function registerUserHandler(
@@ -28,7 +27,7 @@ export async function loginUserHandler(
 }
 
 export const getUserHandler = async (
-	request: AuthorizedFastifyRequest,
+	request: FastifyRequest,
 	reply: FastifyReply,
 ) => {
 	reply.send({ ...request.user });

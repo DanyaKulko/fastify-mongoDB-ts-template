@@ -1,7 +1,7 @@
-import type { Logger } from "winston";
 import "fastify";
 import "fastify-jwt";
-import type { UserRole } from "@projectTypes/models";
+import type { Logger } from "winston";
+import type { IUser, UserRole } from "@userModule/user.model";
 
 declare module "fastify" {
 	export interface FastifyInstance {
@@ -12,6 +12,7 @@ declare module "fastify" {
 
 	export interface FastifyRequest {
 		logger: Logger;
+		user: IUser;
 	}
 }
 

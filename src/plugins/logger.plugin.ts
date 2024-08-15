@@ -8,7 +8,7 @@ const loggerPlugin: FastifyPluginAsync = async (fastify) => {
 		request.logger = logger;
 	});
 
-	if (config.NODE_ENV !== "production") {
+	if (config.DEV) {
 		fastify.addHook("onResponse", async (request, reply) => {
 			fastify.logger.info(
 				`Request: ${request.method} ${request.url} from ${request.ip} - Response time: ${reply.elapsedTime.toFixed(2)} ms`,

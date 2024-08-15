@@ -12,6 +12,8 @@ interface Config {
 	JWT_SECRET: string;
 	MONGODB_URI: string;
 	NODE_ENV: string;
+	PROD: boolean;
+	DEV: boolean;
 	origin: string;
 }
 
@@ -21,6 +23,8 @@ const config: Config = {
 	MONGODB_URI:
 		process.env.MONGODB_URI || "mongodb://localhost:27017/fastify_template",
 	NODE_ENV,
+	PROD: NODE_ENV === "production",
+	DEV: NODE_ENV === "development",
 	origin: process.env.ALLOWED_ORIGIN || "*",
 };
 

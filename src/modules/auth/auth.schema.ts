@@ -13,7 +13,7 @@ export const authSignupSchema: FastifySchema = {
 	},
 };
 
-export const authLoginSchema = {
+export const authLoginSchema: FastifySchema = {
 	tags: ["auth"],
 	body: {
 		type: "object",
@@ -25,7 +25,7 @@ export const authLoginSchema = {
 	},
 };
 
-export const authGetMeSchema = {
+export const authGetMeSchema: FastifySchema = {
 	tags: ["auth"],
 	security: [
 		{

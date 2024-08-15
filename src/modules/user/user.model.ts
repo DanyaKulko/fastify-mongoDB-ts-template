@@ -1,5 +1,15 @@
 import { Schema, model } from "mongoose";
-import type { IUser } from "@projectTypes/models";
+
+export type UserRole = "user" | "admin" | "manager";
+
+export interface IUser {
+	_id: string;
+	username: string;
+	email: string;
+	password: string;
+	role: UserRole;
+	createdAt: Date;
+}
 
 const UserSchema = new Schema<IUser>(
 	{

@@ -1,12 +1,13 @@
 import type { FastifyPluginAsync } from "fastify";
-import { BaseError } from "@errors/BaseError";
+import HttpError from "@errors/HttpError";
 import fp from "fastify-plugin";
+import config from "@config";
 
 const errorHandlerPlugin: FastifyPluginAsync = async (fastify) => {
 	fastify.setErrorHandler(async (err, request, reply) => {
 		request.logger.error({ err: err.message });
 
-		if (err instanceof BaseError) {
+		if (err instanceof HttpError) {
 			return reply.code(err.statusCode).send({ message: err.message });
 		}
 
@@ -14,7 +15,11 @@ const errorHandlerPlugin: FastifyPluginAsync = async (fastify) => {
 			return reply.code(403).send({ message: err.message });
 		}
 
-		reply.code(err.statusCode || 500).send({ message: err.message });
+		const errorMessage = config.PROD
+			? "Internal server error"
+			: err.message;
+
+		reply.code(err.statusCode || 500).send({ message: errorMessage });
 	});
 
 	fastify.setNotFoundHandler((_request, reply) => {
