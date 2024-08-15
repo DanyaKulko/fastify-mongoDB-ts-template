@@ -1,7 +1,7 @@
-import type { FastifyInstance } from "fastify";
-import mongoose from "mongoose";
 import config from "@config";
+import type { FastifyInstance } from "fastify";
 import fp from "fastify-plugin";
+import mongoose from "mongoose";
 
 const mongooseConnectorPlugin = async (fastify: FastifyInstance) => {
 	const connect = async () => {

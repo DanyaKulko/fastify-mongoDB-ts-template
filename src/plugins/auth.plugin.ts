@@ -1,8 +1,8 @@
-import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import fp from "fastify-plugin";
 import config from "@config";
-import User, { type UserRole } from "@userModule/user.model";
 import HttpError from "@errors/HttpError";
+import User, { type UserRole } from "@userModule/user.model";
+import type { FastifyInstance, FastifyRequest } from "fastify";
+import fp from "fastify-plugin";
 
 const authPlugin = async (fastify: FastifyInstance) => {
 	fastify.register(import("@fastify/jwt"), {

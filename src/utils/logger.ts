@@ -1,9 +1,9 @@
 import {
+	type Logger,
+	addColors,
 	createLogger,
 	format,
 	transports,
-	addColors,
-	type Logger,
 } from "winston";
 import "winston-daily-rotate-file";
 import * as path from "node:path";

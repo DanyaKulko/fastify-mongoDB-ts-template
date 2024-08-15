@@ -1,7 +1,7 @@
-import type { FastifyPluginAsync } from "fastify";
-import HttpError from "@errors/HttpError";
-import fp from "fastify-plugin";
 import config from "@config";
+import HttpError from "@errors/HttpError";
+import type { FastifyPluginAsync } from "fastify";
+import fp from "fastify-plugin";
 
 const errorHandlerPlugin: FastifyPluginAsync = async (fastify) => {
 	fastify.setErrorHandler(async (err, request, reply) => {

@@ -1,7 +1,7 @@
 import type { LoginUserBody, SignupUserBody } from "@authModule/auth.types";
-import bcrypt from "bcrypt";
 import HttpError from "@errors/HttpError";
 import User from "@userModule/user.model";
+import bcrypt from "bcrypt";
 
 class AuthService {
 	async registerUser({ email, username, password }: SignupUserBody) {

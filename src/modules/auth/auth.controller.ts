@@ -1,6 +1,6 @@
+import AuthService from "@authModule/auth.service";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { LoginUserRequest, SignupUserRequest } from "../auth/auth.types";
-import AuthService from "@authModule/auth.service";
 
 export async function registerUserHandler(
 	request: FastifyRequest<SignupUserRequest>,

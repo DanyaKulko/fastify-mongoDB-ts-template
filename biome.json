@@ -7,10 +7,11 @@
 			".idea/**",
 			".vscode/**",
 			".DS_Store"
-		]
+		],
+		"include": ["src/**"]
 	},
 	"organizeImports": {
-		"enabled": false
+		"enabled": true
 	},
 	"linter": {
 		"enabled": true,

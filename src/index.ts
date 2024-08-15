@@ -5,11 +5,11 @@ import helmet from "@fastify/helmet";
 
 import config from "@config";
 
-import swaggerPlugin from "./plugins/swagger.plugin";
-import errorHandlerPlugin from "./plugins/errorHandler.plugin";
-import mongooseConnectorPlugin from "./plugins/mongooseConnector.plugin";
 import authPlugin from "./plugins/auth.plugin";
+import errorHandlerPlugin from "./plugins/errorHandler.plugin";
 import loggerPlugin from "./plugins/logger.plugin";
+import mongooseConnectorPlugin from "./plugins/mongooseConnector.plugin";
+import swaggerPlugin from "./plugins/swagger.plugin";
 
 import authRoutes from "@authModule/auth.route";
 import userRoutes from "@userModule/user.route";

@@ -1,7 +1,7 @@
 import "fastify";
 import "fastify-jwt";
-import type { Logger } from "winston";
 import type { IUser, UserRole } from "@userModule/user.model";
+import type { Logger } from "winston";
 
 declare module "fastify" {
 	export interface FastifyInstance {

@@ -1,7 +1,7 @@
+import config from "@config";
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 import logger from "../utils/logger";
-import config from "@config";
 
 const loggerPlugin: FastifyPluginAsync = async (fastify) => {
 	fastify.addHook("onRequest", async (request) => {
