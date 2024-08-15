@@ -48,6 +48,30 @@ To run tests:
 npm run test
 ```
 
+## Commit Message Guidelines
+
+### We follow the Conventional Commits specification for our commit messages. Here are the key types of commits we use:
+
+- `feat`: A new feature.
+- `fix`: A bug fix.
+- `docs`: Documentation only changes.
+- `style`: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
+- `refactor`: A code change that neither fixes a bug nor adds a feature.
+- `test`: Adding missing or correcting existing tests.
+- `chore`: Changes to the build process or auxiliary tools and libraries such as documentation generation.
+
+#### Examples:
+
+```bash
+git commit -m "feat: add user authentication"
+git commit -m "fix: resolve issue with login form validation"
+git commit -m "docs: update API documentation"
+git commit -m "style: format code with Prettier"
+git commit -m "refactor: simplify the user service logic"
+git commit -m "test: add tests for user authentication"
+git commit -m "chore: update npm dependencies"
+```
+
 ## Additional Information
 
 1. Husky is used to run staged linting using pre-commit hooks. Prettier is used to format the code.
