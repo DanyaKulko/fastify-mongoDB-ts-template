@@ -9,7 +9,7 @@ import "winston-daily-rotate-file";
 import * as path from "node:path";
 import config from "@config";
 
-const rootDir = path.join(__dirname, "..");
+const rootDir = path.join(__dirname, "..", "..");
 
 const errorLogFilePath = path.join(rootDir, "logs", "errors-%DATE%.log");
 const infoLogFilePath = path.join(rootDir, "logs", "info-%DATE%.log");
@@ -56,7 +56,7 @@ const fileFormat = format.combine(
 );
 
 const rotateOptions = {
-	datePattern: "YYYY-MM-DD-HH",
+	datePattern: "YYYY-MM-DD",
 	zippedArchive: true,
 	maxSize: "20m",
 	maxFiles: "14d",
