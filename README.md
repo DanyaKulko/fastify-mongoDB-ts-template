@@ -25,15 +25,6 @@ npm run dev
 
 That's it! By default, server should be running on `http://localhost:3000`.
 
-## Testing
-
-Jest is used for testing. To isolate tests from the main application, a separate MongoDB instance is created for testing. 
-
-To run tests:
-```bash
-npm run test
-```
-
 ### Scripts
 
 - `npm run dev`: Start the server in development mode
@@ -42,12 +33,27 @@ npm run test
 - `npm run lint`: Lint the project
 - `npm run test`: Run tests
 
+There is also generate-module.sh script that can be used to generate new module with all necessary files.
 
+```bash
+./bin/generate-module.sh <module-name>
+```
+
+## Testing
+
+Jest is used for testing. To isolate tests from the main application, a separate MongoDB instance is created for testing.
+
+To run tests:
+```bash
+npm run test
+```
 
 ## Additional Information
 
 1. Husky is used to run staged linting using pre-commit hooks. Prettier is used to format the code.
 2. Swagger is available in development mode at `http://localhost:3000/docs`.
+
+Also, don't forget to change the .env file with your own values and delete the tracking of the .env file in the .gitignore file.
 
 ## Folder Structure
 
@@ -56,8 +62,7 @@ npm run test
 │   ├── config
 │   │   └── index.ts
 │   ├── errors
-│   │   ├── AuthError.ts
-│   │   └── BaseError.ts
+│   │   └── HttpError.ts
 │   ├── modules
 │   │   ├── auth
 │   │   │   ├── auth.controller.ts
@@ -69,15 +74,12 @@ npm run test
 │   │       ├── user.controller.ts
 │   │       ├── user.model.ts
 │   │       ├── user.route.ts
-│   │       ├── user.repository.ts
 │   │       ├── user.schema.ts
 │   │       ├── user.types.ts
 │   │       └── user.service.ts
 │   ├── types
-│   │   ├── fastify
-│   │   │   └── index.d.ts
-│   │   ├── models.ts
-│   │   └── request.ts
+│   │   └── fastify
+│   │       └── index.d.ts
 │   ├── plugins
 │   │   ├── auth.plugin.ts
 │   │   ├── errorHandler.plugin.ts
