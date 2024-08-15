@@ -7,6 +7,7 @@ import {
 } from "winston";
 import "winston-daily-rotate-file";
 import * as path from "node:path";
+import config from "@config";
 
 const rootDir = path.join(__dirname, "..");
 
@@ -29,21 +30,28 @@ const consoleFormat = format.combine(
 	format((info) => ({
 		...info,
 		level: info.level.toUpperCase(),
+		label: info.label ? ` -> ${info.label.toUpperCase()}` : "",
 	}))(),
 	format.colorize({ all: true }),
-	format.printf(
-		({ level, message, timestamp }) =>
-			`${timestamp} | [ ${level} ]: ${message}`,
-	),
+	format.printf(({ level, message, timestamp, label }) => {
+		const labelString = label ? ` -> ${label}` : "";
+		return `${timestamp} | [ ${level}${labelString} ]: ${message}`;
+	}),
 );
 
 const fileFormat = format.combine(
 	format.simple(),
 	timestampFormat,
-	format.printf(({ level, message, timestamp }) => {
+	format((info) => ({
+		...info,
+		level: info.level.toUpperCase(),
+		label: info.label ? ` -> ${info.label.toUpperCase()}` : "",
+	}))(),
+	format.printf(({ level, message, timestamp, label }) => {
 		const outputMessage =
 			typeof message === "object" ? JSON.stringify(message) : message;
-		return `${timestamp} | [ ${level.toUpperCase()} ]: ${outputMessage}`;
+		const labelString = label ? ` -> ${label}` : "";
+		return `${timestamp} | [ ${level}${labelString} ]: ${outputMessage}`;
 	}),
 );
 
@@ -70,7 +78,7 @@ const logger: Logger = createLogger({
 	],
 });
 
-if (process.env.NODE_ENV !== "production") {
+if (!config.PROD) {
 	logger.add(new transports.Console({ format: consoleFormat }));
 }
 

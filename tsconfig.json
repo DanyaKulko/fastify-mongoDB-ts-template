@@ -12,7 +12,8 @@
 			"@authModule/*": ["./src/modules/auth/*"],
 			"@userModule/*": ["./src/modules/user/*"],
 			"@config": ["./src/config/index.ts"],
-			"@errors/*": ["./src/errors/*"]
+			"@errors/*": ["./src/errors/*"],
+			"@utils/*": ["./src/utils/*"]
 		},
 		"baseUrl": ".",
 		"strict": true,
