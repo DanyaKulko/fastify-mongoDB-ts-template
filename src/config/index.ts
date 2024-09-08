@@ -14,6 +14,7 @@ interface Config {
 	NODE_ENV: string;
 	PROD: boolean;
 	DEV: boolean;
+	STAGE: boolean;
 	origin: string;
 }
 
@@ -25,6 +26,7 @@ const config: Config = {
 	NODE_ENV,
 	PROD: NODE_ENV === "production",
 	DEV: NODE_ENV === "development",
+	STAGE: NODE_ENV === "stage",
 	origin: process.env.ALLOWED_ORIGIN || "*",
 };
 
