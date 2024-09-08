@@ -19,53 +19,57 @@ mkdir -p "$MODULE_DIR"
 
 cat > "$MODULE_DIR/${MODULE_NAME}.controller.ts" <<EOL
 import type { FastifyRequest } from "fastify";
-import type {GeneratedRequestRequest} from "./test.types";
+import type {Get${CLASS_NAME}Request} from "./${MODULE_NAME}.types";
 import ${CLASS_NAME}Service from "./${MODULE_NAME}.service";
 
-export const generated = async (request: FastifyRequest<GeneratedRequestRequest>) => {
-    const { test } = request.body;
-    const data = await ${CLASS_NAME}Service.getSomething(test);
-    return data;
+export const get${CLASS_NAME}s = async (request: FastifyRequest<Get${CLASS_NAME}Request>) => {
+    const { limit } = request.query;
+    return ${CLASS_NAME}Service.get${CLASS_NAME}s(limit);
 };
 EOL
 
 cat > "$MODULE_DIR/${MODULE_NAME}.schema.ts" <<EOL
 import type { FastifySchema } from "fastify";
 
-export const generatedSchema: FastifySchema = {
-    body: {
+export const get${CLASS_NAME}sSchema: FastifySchema = {
+    querystring: {
     		type: "object",
     		properties: {
-    			test: { type: "string" },
+    			limit: { type: "string" },
     		},
     	},
 };
 EOL
 
 cat > "$MODULE_DIR/${MODULE_NAME}.types.ts" <<EOL
-export interface GeneratedRequestBody {
-	test: string;
-}
+import type { RouteGenericInterface } from "fastify";
 
-export interface GeneratedRequestRequest {
-	Body: GeneratedRequestBody;
-}
+type Implements<T, U extends T> = U;
 
+export type Get${CLASS_NAME}Request = Implements<
+	RouteGenericInterface,
+	{
+		Querystring: {
+		  limit: string;
+    };
+	}
+>;
 EOL
 
 cat > "$MODULE_DIR/${MODULE_NAME}.service.ts" <<EOL
 import ${CLASS_NAME} from "./${MODULE_NAME}.model";
 import logger from "@utils/logger";
+import type winston from "winston";
 
 class ${CLASS_NAME}Service {
-    private logger;
+    private logger: winston.Logger;
     constructor() {
-        this.logger = logger.child({ service: "${MODULE_NAME}" });
+        this.logger = logger.child({ service: "${CLASS_NAME}" });
     }
 
-    async getSomething(test: string) {
-        this.logger.info(test);
-        return await Test.find().lean();
+    async get${CLASS_NAME}s(limit: string) {
+        this.logger.info(\`get${CLASS_NAME}s called with limit: \${limit}\`);
+        return ${CLASS_NAME}.find().limit(+limit).lean();
     }
 }
 
@@ -103,15 +107,16 @@ EOL
 
 cat > "$MODULE_DIR/${MODULE_NAME}.routes.ts" <<EOL
 import type { FastifyInstance } from "fastify";
-import { generated } from "./${MODULE_NAME}.controller";
+import { get${CLASS_NAME}s } from "./${MODULE_NAME}.controller";
+import { get${CLASS_NAME}sSchema } from "./${MODULE_NAME}.schema";
 
 async function ${MODULE_NAME}Routes(server: FastifyInstance) {
     server.get(
         "/",
         {
-            schema: generatedSchema
+            schema: get${CLASS_NAME}sSchema
         },
-        generated,
+        get${CLASS_NAME}s,
     );
 }
 
