@@ -1,10 +1,9 @@
-import type { LoginUserBody, SignupUserBody } from "@authModule/auth.types";
 import HttpError from "@errors/HttpError";
 import User from "@userModule/user.model";
 import bcrypt from "bcrypt";
 
 class AuthService {
-	async registerUser({ email, username, password }: SignupUserBody) {
+	async registerUser(email: string, username: string, password: string) {
 		const userExists = await User.exists({
 			$or: [{ email }, { username }],
 		});
@@ -18,7 +17,7 @@ class AuthService {
 		return await User.create({ username, email, password: hashedPassword });
 	}
 
-	async loginUser({ email, password }: LoginUserBody) {
+	async loginUser(email: string, password: string) {
 		const user = await User.findOne({ email }).lean();
 		if (!user) {
 			throw new HttpError(404, "User not found");

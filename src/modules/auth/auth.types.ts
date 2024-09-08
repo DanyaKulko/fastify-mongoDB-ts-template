@@ -1,18 +1,24 @@
-export interface SignupUserBody {
-	email: string;
-	username: string;
-	password: string;
-}
+import type { RouteGenericInterface } from "fastify";
 
-export interface LoginUserBody {
-	email: string;
-	password: string;
-}
+type Implements<T, U extends T> = U;
 
-export interface SignupUserRequest {
-	Body: SignupUserBody;
-}
+export type SignupUserRequest = Implements<
+	RouteGenericInterface,
+	{
+		Body: {
+			email: string;
+			username: string;
+			password: string;
+		};
+	}
+>;
 
-export interface LoginUserRequest {
-	Body: LoginUserBody;
-}
+export type LoginUserRequest = Implements<
+	RouteGenericInterface,
+	{
+		Body: {
+			email: string;
+			password: string;
+		};
+	}
+>;

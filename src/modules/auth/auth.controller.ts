@@ -4,31 +4,26 @@ import type { LoginUserRequest, SignupUserRequest } from "../auth/auth.types";
 
 export async function registerUserHandler(
 	request: FastifyRequest<SignupUserRequest>,
-	reply: FastifyReply,
 ) {
 	const { username, email, password } = request.body;
 
-	const user = await AuthService.registerUser({ email, username, password });
+	const user = await AuthService.registerUser(email, username, password);
 	const token = request.server.jwt.sign({ id: user._id });
 
-	reply.send({ token });
+	return { token, user };
 }
 
 export async function loginUserHandler(
 	request: FastifyRequest<LoginUserRequest>,
-	reply: FastifyReply,
 ) {
 	const { email, password } = request.body;
 
-	const user = await AuthService.loginUser({ email, password });
+	const user = await AuthService.loginUser(email, password);
 	const token = request.server.jwt.sign({ id: user._id });
 
-	reply.send({ token });
+	return { token, user };
 }
 
-export const getUserHandler = async (
-	request: FastifyRequest,
-	reply: FastifyReply,
-) => {
-	reply.send({ ...request.user });
+export const getUserHandler = async (request: FastifyRequest) => {
+	return { ...request.user };
 };

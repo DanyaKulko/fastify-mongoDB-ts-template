@@ -9,10 +9,9 @@ import {
 	authLoginSchema,
 	authSignupSchema,
 } from "./auth.schema";
-import type { LoginUserRequest, SignupUserRequest } from "./auth.types";
 
 async function authRoutes(server: FastifyInstance) {
-	server.post<LoginUserRequest>(
+	server.post(
 		"/login",
 		{
 			schema: authLoginSchema,
@@ -20,7 +19,7 @@ async function authRoutes(server: FastifyInstance) {
 		loginUserHandler,
 	);
 
-	server.post<SignupUserRequest>(
+	server.post(
 		"/signup",
 		{
 			schema: authSignupSchema,
