@@ -1,11 +1,12 @@
 import config from "@config";
 import HttpError from "@errors/HttpError";
+import logger from "@utils/logger";
 import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 
 const errorHandlerPlugin: FastifyPluginAsync = async (fastify) => {
 	fastify.setErrorHandler(async (err, request, reply) => {
-		request.logger.error({ err: err.message });
+		logger.error({ err: err.message });
 
 		if (err instanceof HttpError) {
 			return reply.code(err.statusCode).send({ message: err.message });
@@ -29,5 +30,4 @@ const errorHandlerPlugin: FastifyPluginAsync = async (fastify) => {
 
 export default fp(errorHandlerPlugin, {
 	name: "errorHandler",
-	dependencies: ["logger"],
 });

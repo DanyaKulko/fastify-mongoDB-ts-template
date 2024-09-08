@@ -13,6 +13,7 @@ import swaggerPlugin from "./plugins/swagger.plugin";
 
 import authRoutes from "@authModule/auth.route";
 import userRoutes from "@userModule/user.route";
+import logger from "@utils/logger";
 
 async function buildServer(): Promise<FastifyInstance> {
 	const server = fastify({ logger: false });
@@ -22,7 +23,7 @@ async function buildServer(): Promise<FastifyInstance> {
 
 	for (const signal of ["SIGINT", "SIGTERM"]) {
 		process.on(signal, async () => {
-			server.logger.error(`Received ${signal}, closing server.`);
+			logger.error(`Received ${signal}, closing server.`);
 			await server.close();
 			process.exit(0);
 		});
@@ -46,7 +47,7 @@ async function registerPlugins(server: FastifyInstance): Promise<void> {
 			await server.register(swaggerPlugin);
 		}
 	} catch (error) {
-		server.logger.error("Error registering plugins", error);
+		logger.error("Error registering plugins", error);
 		throw error;
 	}
 }
@@ -56,7 +57,7 @@ async function registerRoutes(server: FastifyInstance): Promise<void> {
 		await server.register(userRoutes, { prefix: "api/users" });
 		await server.register(authRoutes, { prefix: "api/auth" });
 	} catch (error) {
-		server.logger.error("Error registering routes", error);
+		logger.error("Error registering routes", error);
 		throw error;
 	}
 }
@@ -66,17 +67,15 @@ buildServer().then(async (server) => {
 		await server.ready();
 
 		await server.listen({ port: config.PORT });
-		server.logger.info(
-			`Server listening at http://localhost:${config.PORT}`,
-		);
+		logger.info(`Server listening at http://localhost:${config.PORT}`);
 
 		if (!config.PROD) {
-			server.logger.info(
+			logger.info(
 				`Swagger UI available at http://localhost:${config.PORT}/docs`,
 			);
 		}
 	} catch (error) {
-		server.logger.error("Error starting server", error);
+		logger.error("Error starting server", error);
 		process.exit(1);
 	}
 });
